@@ -5,7 +5,7 @@
   var calm=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
   /* Typing effect on the home info lines */
-  var lines=[].slice.call(document.querySelectorAll('.info p:not(.role)')),timer=0,token=0;
+  var lines=[].slice.call(document.querySelectorAll('.info p')),timer=0,token=0;
   lines.forEach(function(l){l.dataset.full=l.textContent});
   function typeInfo(){
     token++;var my=token;clearTimeout(timer);
@@ -19,29 +19,6 @@
       l.classList.add('typing');
       if(ci<l.dataset.full.length){ci++;l.textContent=l.dataset.full.slice(0,ci);timer=setTimeout(step,40)}
       else{li++;ci=0;timer=setTimeout(step,280)}
-    })();
-  }
-
-  /* Typing effect: the role line types, deletes, and moves to the next role. Edit the list below. */
-  var roles=['BSIT Student','Network and Security Learner','Makeup Enthusiast','Manga Reader'];
-  var typedEl=document.getElementById('typed'),roleTimer=0,roleToken=0;
-  function stopRoles(){roleToken++;clearTimeout(roleTimer)}
-  function typeRoles(){
-    stopRoles();var my=roleToken;
-    if(calm){typedEl.textContent=roles[0];return}
-    var r=0,c=0,del=false;
-    (function tick(){
-      if(my!==roleToken)return;
-      var word=roles[r];
-      if(!del){
-        c++;typedEl.textContent=word.slice(0,c);
-        if(c===word.length){del=true;roleTimer=setTimeout(tick,1600);return}
-        roleTimer=setTimeout(tick,80);
-      }else{
-        c--;typedEl.textContent=word.slice(0,c);
-        if(c===0){del=false;r=(r+1)%roles.length;roleTimer=setTimeout(tick,380);return}
-        roleTimer=setTimeout(tick,36);
-      }
     })();
   }
 
@@ -76,7 +53,7 @@
     opener=card;
   }
   function openLb(card){
-    set=[].slice.call(card.parentElement.querySelectorAll('.ach'));
+    set=[].slice.call(document.querySelectorAll('#achievements .ach'));
     show(set.indexOf(card));
     lb.hidden=false;document.getElementById('lb-close').focus();
   }
@@ -109,7 +86,7 @@
     var active=[].filter.call(links,function(a){return a.dataset.view===id})[0];
     document.title=(id==='home'?'':active.textContent+' | ')+'Ashlyne Nichole Flores';
     window.scrollTo(0,0);
-    if(id==='home'){typeInfo();typeRoles()}else{stopRoles()}
+    if(id==='home')typeInfo();
   }
   window.addEventListener('hashchange',route);
   route();
